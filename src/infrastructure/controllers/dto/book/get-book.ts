@@ -1,8 +1,8 @@
 import z from "zod";
-import { BookOutputDto } from "./book.ts";
+import { BookOutputScheme } from "./book.ts";
 
-export const GetBookOutputDto = BookOutputDto;
-export type GetBookOutputDto = ReturnType<typeof GetBookOutputDto.parse>;
+export const GetBookOutputScheme = BookOutputScheme;
+export type GetBookOutputDto = ReturnType<typeof GetBookOutputScheme.parse>;
 
-export const GetBooksOutputDto = z.array(BookOutputDto);
-export type GetBooksOutputDto = ReturnType<typeof GetBooksOutputDto.parse>;
+export const GetBooksOutputScheme = z.array(BookOutputScheme);
+export type GetBooksOutputDto = ReturnType<typeof GetBooksOutputScheme.parse>;

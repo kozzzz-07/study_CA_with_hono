@@ -6,9 +6,10 @@ import type {
   GetBooksOutputDto,
 } from "./dto/book/get-book.ts";
 import {
-  PostBookInputDto as PostBookInputSchema,
+  PostBookInputScheme,
   type PostBookOutputDto,
 } from "./dto/book/post-book.ts";
+import { BookIdScheme } from "./dto/book/book.ts";
 
 const app = new Hono();
 
@@ -23,12 +24,16 @@ const dummyBook: GetBookOutputDto = {
 // list
 app.get("/", (c) => c.json<GetBooksOutputDto>([dummyBook]));
 // create
-app.post("/", zValidator("json", PostBookInputSchema), (c) =>
+app.post("/", zValidator("json", PostBookInputScheme), (c) =>
   c.json<PostBookOutputDto>(dummyBook, 201)
 );
 // getById
-app.get("/:id", (c) => c.json<GetBookOutputDto>(dummyBook));
+app.get("/:id", zValidator("param", BookIdScheme), (c) =>
+  c.json<GetBookOutputDto>(dummyBook)
+);
 // delete
-app.delete("/:id", (c) => c.newResponse(null, 204));
+app.delete("/:id", zValidator("param", BookIdScheme), (c) =>
+  c.newResponse(null, 204)
+);
 
 export default app;
