@@ -1,15 +1,12 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 
-import type {
-  GetBookOutputDto,
-  GetBooksOutputDto,
-} from "./dto/book/get-book.ts";
+import { BookIdScheme } from "./dto/book.ts";
+import type { GetBookOutputDto, GetBooksOutputDto } from "./dto/get-book.ts";
 import {
   PostBookInputScheme,
   type PostBookOutputDto,
-} from "./dto/book/post-book.ts";
-import { BookIdScheme } from "./dto/book/book.ts";
+} from "./dto/post-book.ts";
 
 const app = new Hono();
 
