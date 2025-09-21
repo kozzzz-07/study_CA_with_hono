@@ -1,0 +1,3 @@
+- zod-openapiを導入することで、DTO周りがすごくスッキリ
+- https://hono-ja.pages.dev/examples/zod-openapi
+- 

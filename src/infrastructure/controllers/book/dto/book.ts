@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "@hono/zod-openapi";
 
 export const BookOutputScheme = z.object({
   id: z.uuid(),

@@ -1,14 +1,11 @@
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import type { GetBookOutputDto } from "./dto/get-book.ts";
 
-import { BookIdScheme } from "./dto/book.ts";
-import type { GetBookOutputDto, GetBooksOutputDto } from "./dto/get-book.ts";
-import {
-  PostBookInputScheme,
-  type PostBookOutputDto,
-} from "./dto/post-book.ts";
+import { getByIdRoute, listRoute } from "./routes/get.ts";
+import { createBookRoute } from "./routes/post.ts";
+import { deleteRoute } from "./routes/delete.ts";
 
-const app = new Hono();
+const app = new OpenAPIHono();
 
 const dummyBook: GetBookOutputDto = {
   id: "a3a2445f-8735-4795-a853-485b38072c63",
@@ -19,18 +16,12 @@ const dummyBook: GetBookOutputDto = {
 };
 
 // list
-app.get("/", (c) => c.json<GetBooksOutputDto>([dummyBook]));
+app.openapi(listRoute, (c) => c.json([dummyBook]));
 // create
-app.post("/", zValidator("json", PostBookInputScheme), (c) =>
-  c.json<PostBookOutputDto>(dummyBook, 201)
-);
+app.openapi(createBookRoute, (c) => c.json(dummyBook, 201));
 // getById
-app.get("/:id", zValidator("param", BookIdScheme), (c) =>
-  c.json<GetBookOutputDto>(dummyBook)
-);
+app.openapi(getByIdRoute, (c) => c.json(dummyBook));
 // delete
-app.delete("/:id", zValidator("param", BookIdScheme), (c) =>
-  c.newResponse(null, 204)
-);
+app.openapi(deleteRoute, (c) => c.newResponse(null, 204));
 
 export default app;
