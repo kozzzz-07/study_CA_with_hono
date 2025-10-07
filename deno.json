@@ -4,10 +4,12 @@
     "@hono/zod-openapi": "npm:@hono/zod-openapi@^1.1.1",
     "@hono/zod-validator": "npm:@hono/zod-validator@^0.7.2",
     "hono": "npm:hono@^4.9.7",
+    "pino": "npm:pino@^10.0.0",
     "zod": "npm:zod@^4.1.8"
   },
   "tasks": {
-    "start": "deno run --allow-net src/main.ts"
+    "start": "deno run --env-file --allow-net --allow-sys src/main.ts",
+    "start:pretty": "deno run --env-file --allow-net --allow-sys src/main.ts | npx pino-pretty --colorize"
   },
   "compilerOptions": {
     "jsx": "precompile",
