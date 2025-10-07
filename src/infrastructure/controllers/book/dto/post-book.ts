@@ -8,7 +8,7 @@ export const PostBookInputScheme = z.object({
   totalPages: z.number().min(1),
 });
 
-export type PostBookInputDto = ReturnType<typeof PostBookInputScheme.parse>;
+// export type PostBookInputDto = ReturnType<typeof PostBookInputScheme.parse>;
 
 export const PostBookOutputScheme = BookOutputScheme;
-export type PostBookOutputDto = ReturnType<typeof PostBookOutputScheme.parse>;
+// export type PostBookOutputDto = ReturnType<typeof PostBookOutputScheme.parse>;

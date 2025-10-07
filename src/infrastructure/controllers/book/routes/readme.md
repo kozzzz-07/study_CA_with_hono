@@ -1,3 +1,4 @@
 - zod-openapiを導入することで、DTO周りがすごくスッキリ
 - https://hono-ja.pages.dev/examples/zod-openapi
-- 
+- zValidator が不要になる
+  - 74ab1b40d8b17779735f40afa4936129cc294ced
