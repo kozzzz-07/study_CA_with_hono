@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 
 // Bookエンティティの形状を定義するインターフェース
 export interface Book {

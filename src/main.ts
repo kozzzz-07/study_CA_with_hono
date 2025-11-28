@@ -7,6 +7,8 @@ import {
   logger,
 } from "./infrastructure/adapters/pino-logger/adapter.ts";
 import type { Logger } from "./core/ports/logger.port.ts";
+import { drizzleOrmRepository } from "./infrastructure/adapters/orm/drizzle/book/book.repository.ts";
+import { createBook } from "./core/domain/book.entity.ts";
 
 type AppEnv = {
   Variables: {
@@ -26,7 +28,7 @@ app.use("*", async (c, next) => {
 });
 
 app.get("/", (c) => {
-  // コンテキストから抽象化されたloggerを取得
+  // コンテキストから抽象化されたloggerを取得できる
   const logger = c.get("logger");
   logger.debug("debug");
   logger.info("Root route was called!", { path: c.req.path });
@@ -37,6 +39,18 @@ app.get("/", (c) => {
 });
 
 app.route("/books", books);
+
+app.get("/db-test", (c) => {
+  drizzleOrmRepository.save(
+    createBook({
+      summary: "test",
+      author: "Test",
+      totalPages: 10,
+    })
+  );
+
+  return c.text("ok");
+});
 
 // The OpenAPI documentation will be available at /doc
 app.doc("/doc", {
