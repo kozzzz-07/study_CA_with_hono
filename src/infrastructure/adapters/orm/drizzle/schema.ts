@@ -1,3 +1,3 @@
-import { bookSchema } from "./book/book.schema.ts";
+import { bookTable } from "./book/book.schema.ts";
 
-export { bookSchema };
+export { bookTable };

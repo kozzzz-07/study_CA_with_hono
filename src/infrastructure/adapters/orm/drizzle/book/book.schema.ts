@@ -2,7 +2,7 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { randomUUID } from "crypto";
 import { sql } from "drizzle-orm";
 
-export const bookSchema = sqliteTable("book", {
+export const bookTable = sqliteTable("book", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => randomUUID()),
