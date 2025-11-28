@@ -40,14 +40,33 @@ app.get("/", (c) => {
 
 app.route("/books", books);
 
-app.get("/db-test", (c) => {
-  drizzleOrmRepository.create(
+app.get("/db-test", async (c) => {
+  // db連携のテスト
+  const res0 = await drizzleOrmRepository.create(
     createBook({
       summary: "test",
       author: "Test",
       totalPages: 10,
     })
   );
+  logger.info("list", res0);
+
+  await drizzleOrmRepository.create(
+    createBook({
+      summary: "test2",
+      author: "Test2",
+      totalPages: 100,
+    })
+  );
+
+  const res = await drizzleOrmRepository.list();
+  logger.info("list", res);
+
+  const res2 = await drizzleOrmRepository.findById(res[0].id);
+  logger.info("findById", res2);
+
+  const res3 = await drizzleOrmRepository.delete(res[0].id);
+  logger.info("delete", res3);
 
   return c.text("ok");
 });

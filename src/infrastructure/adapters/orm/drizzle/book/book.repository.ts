@@ -1,5 +1,9 @@
 import { eq, InferSelectModel } from "drizzle-orm";
-import { Book, hydrateBook } from "../../../../../core/entities/book.entity.ts";
+import {
+  Book,
+  CreateBookInput,
+  hydrateBook,
+} from "../../../../../core/entities/book.entity.ts";
 import { BookRepository } from "../../../../../core/ports/database.port.ts";
 import { db } from "../client.ts";
 import { bookTable } from "./book.schema.ts";
@@ -21,17 +25,11 @@ const toDomain = (record: PersistenceBook): Book => {
   });
 };
 
-/**
- * ドメインモデルを永続化モデルに変換するマッパー
- */
-const toPersistence = (book: Book) => {
-  return {
-    id: book.id,
-    summary: book.summary,
-    author: book.author,
-    totalPages: book.totalPages,
-    // createdAt はDBが自動で設定するので、ここでは不要
-  };
+const create = async (book: CreateBookInput): Promise<void> => {
+  await db.insert(bookTable).values(book).onConflictDoUpdate({
+    target: bookTable.id,
+    set: book,
+  });
 };
 
 const findById = async (id: string): Promise<Book | null> => {
@@ -47,17 +45,18 @@ const findById = async (id: string): Promise<Book | null> => {
   return toDomain(result[0]);
 };
 
-const create = async (book: Book): Promise<void> => {
-  await db
-    .insert(bookTable)
-    .values(toPersistence(book))
-    .onConflictDoUpdate({
-      target: bookTable.id,
-      set: toPersistence(book),
-    });
+const list = async (): Promise<Book[]> => {
+  const result: PersistenceBook[] = await db.select().from(bookTable);
+  return result.map(toDomain);
+};
+
+const remove = async (id: string): Promise<void> => {
+  await db.delete(bookTable).where(eq(bookTable.id, id));
 };
 
 export const drizzleOrmRepository: BookRepository = {
-  findById,
   create,
+  findById,
+  list,
+  delete: remove,
 };
