@@ -1,14 +1,14 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { swaggerUI } from "@hono/swagger-ui";
 import { logger as honoLogger } from "hono/logger";
-import books from "./infrastructure/controllers/book/books.ts";
+import books from "./infrastructure/api/controllers/book/books.ts";
 import {
   customLogger,
   logger,
 } from "./infrastructure/adapters/pino-logger/adapter.ts";
 import type { Logger } from "./core/ports/logger.port.ts";
 import { drizzleOrmRepository } from "./infrastructure/adapters/orm/drizzle/book/book.repository.ts";
-import { createBook } from "./core/domain/book.entity.ts";
+import { createBook } from "./core/entities/book.entity.ts";
 
 type AppEnv = {
   Variables: {
@@ -41,7 +41,7 @@ app.get("/", (c) => {
 app.route("/books", books);
 
 app.get("/db-test", (c) => {
-  drizzleOrmRepository.save(
+  drizzleOrmRepository.create(
     createBook({
       summary: "test",
       author: "Test",

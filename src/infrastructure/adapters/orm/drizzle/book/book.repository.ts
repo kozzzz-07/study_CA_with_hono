@@ -1,5 +1,5 @@
 import { eq, InferSelectModel } from "drizzle-orm";
-import { Book, hydrateBook } from "../../../../../core/domain/book.entity.ts";
+import { Book, hydrateBook } from "../../../../../core/entities/book.entity.ts";
 import { BookRepository } from "../../../../../core/ports/database.port.ts";
 import { db } from "../client.ts";
 import { bookTable } from "./book.schema.ts";
@@ -47,7 +47,7 @@ const findById = async (id: string): Promise<Book | null> => {
   return toDomain(result[0]);
 };
 
-const save = async (book: Book): Promise<void> => {
+const create = async (book: Book): Promise<void> => {
   await db
     .insert(bookTable)
     .values(toPersistence(book))
@@ -59,5 +59,5 @@ const save = async (book: Book): Promise<void> => {
 
 export const drizzleOrmRepository: BookRepository = {
   findById,
-  save,
+  create,
 };
