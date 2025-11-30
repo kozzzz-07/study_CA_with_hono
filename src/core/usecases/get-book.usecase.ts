@@ -5,7 +5,7 @@ import { Logger } from "../ports/logger.port.ts";
 // Usecaseが必要とする依存関係を定義
 export interface GetBookDeps {
   repository: BookRepository;
-  logger: Logger; // todo: loggerはミドルウェアから取得したものを利用すればいいのではないか検討
+  logger: Logger;
 }
 
 // Usecase本体の型
