@@ -1,6 +1,6 @@
-import { Book } from "../entities/book.entity.ts";
-import { BookRepository } from "../ports/database.port.ts";
-import { Logger } from "../ports/logger.port.ts";
+import { Book } from "../../entities/book.entity.ts";
+import { BookRepository } from "../../ports/database.port.ts";
+import { Logger } from "../../ports/logger.port.ts";
 
 // Usecaseが必要とする依存関係を定義
 export interface GetBookDeps {

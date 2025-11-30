@@ -5,7 +5,13 @@ export const createBookRoute = createRoute({
   method: "post",
   path: "/",
   request: {
-    params: PostBookInputScheme,
+    body: {
+      content: {
+        "application/json": {
+          schema: PostBookInputScheme,
+        },
+      },
+    },
   },
   responses: {
     201: {

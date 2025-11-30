@@ -26,11 +26,13 @@ const toDomain = (record: PersistenceBook): Book => {
   });
 };
 
-const create = async (book: CreateBookInput): Promise<void> => {
-  await db.insert(bookTable).values(book).onConflictDoUpdate({
-    target: bookTable.id,
-    set: book,
-  });
+const create = async (book: CreateBookInput): Promise<Book> => {
+  const [createdBook] = await db
+    .insert(bookTable)
+    .values(book)
+    .returning();
+  
+  return toDomain(createdBook);
 };
 
 const findById = async (id: string): Promise<Book | null> => {
