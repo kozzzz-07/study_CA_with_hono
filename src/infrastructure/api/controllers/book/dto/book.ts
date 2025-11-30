@@ -4,7 +4,7 @@ export const BookOutputScheme = z.object({
   id: z.uuid(),
   title: z.string().min(1),
   summary: z.string().min(5),
-  author: z.string().min(1),
+  author: z.string().min(1).nullable(),
   totalPages: z.number().min(1),
 });
 
