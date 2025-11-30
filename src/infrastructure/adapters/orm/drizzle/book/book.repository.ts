@@ -19,6 +19,7 @@ const toDomain = (record: PersistenceBook): Book => {
   // DBから取得したデータは信頼済みとみなし、バリデーションをスキップするメソッドを呼ぶのが一般的
   return hydrateBook({
     id: record.id,
+    title: record.title,
     summary: record.summary,
     author: record.author,
     totalPages: record.totalPages,

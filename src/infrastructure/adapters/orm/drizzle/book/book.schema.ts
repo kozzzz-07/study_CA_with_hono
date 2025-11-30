@@ -6,6 +6,7 @@ export const bookTable = sqliteTable("book", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => randomUUID()),
+  title: text("title").notNull(),
   summary: text("summary").notNull(),
   author: text("author"),
   totalPages: integer("totalPages").notNull(),

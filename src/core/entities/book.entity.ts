@@ -3,12 +3,14 @@ import { randomUUID } from "node:crypto";
 // Bookエンティティの形状を定義するインターフェース
 export interface Book {
   readonly id: string;
+  readonly title: string;
   readonly summary: string;
   readonly author: string | null;
   readonly totalPages: number;
 }
 
 export interface CreateBookInput {
+  title: string;
   summary: string;
   author: string | null;
   totalPages: number;
@@ -19,6 +21,7 @@ export interface CreateBookInput {
  * ここでビジネスルールを検証する。例えばsummaryは50文字制限とか
  */
 export const createBook = (props: {
+  title: string;
   summary: string;
   author: string | null;
   totalPages: number;
@@ -32,6 +35,7 @@ export const createBook = (props: {
  */
 export const hydrateBook = (props: {
   id: string;
+  title: string;
   summary: string;
   author: string | null;
   totalPages: number;

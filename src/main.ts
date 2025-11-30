@@ -10,7 +10,7 @@ import type { Logger } from "./core/ports/logger.port.ts";
 import { drizzleOrmRepository } from "./infrastructure/adapters/orm/drizzle/book/book.repository.ts";
 import { createBook } from "./core/entities/book.entity.ts";
 
-type AppEnv = {
+export type AppEnv = {
   Variables: {
     logger: Logger;
   };
@@ -44,6 +44,7 @@ app.get("/db-test", async (c) => {
   // db連携のテスト
   const res0 = await drizzleOrmRepository.create(
     createBook({
+      title: "test",
       summary: "test",
       author: "Test",
       totalPages: 10,
@@ -53,6 +54,7 @@ app.get("/db-test", async (c) => {
 
   await drizzleOrmRepository.create(
     createBook({
+      title: "test2",
       summary: "test2",
       author: "Test2",
       totalPages: 100,

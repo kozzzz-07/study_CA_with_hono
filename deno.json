@@ -13,7 +13,7 @@
   "tasks": {
     "start": "deno run --env-file --allow-env --allow-net --allow-sys src/main.ts",
     "start:pretty": "deno run --env-file --allow-env --allow-net --allow-sys src/main.ts | npx pino-pretty --colorize",
-    "drizzle": "bash drizzle_push.sh",
+    "drizzle:push": "bash drizzle_push.sh",
     "drizzle:generate": "bash drizzle_generate.sh"
   },
   "compilerOptions": {

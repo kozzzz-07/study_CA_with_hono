@@ -1,6 +1,10 @@
 import { createRoute } from "@hono/zod-openapi";
 import { BookIdScheme } from "../dto/book.ts";
-import { GetBookOutputScheme, GetBooksOutputScheme } from "../dto/get-book.ts";
+import {
+  ErrorScheme,
+  GetBookOutputScheme,
+  GetBooksOutputScheme,
+} from "../dto/get-book.ts";
 
 export const listRoute = createRoute({
   method: "get",
@@ -31,6 +35,14 @@ export const getByIdRoute = createRoute({
         },
       },
       description: "Retrieve the book",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: ErrorScheme,
+        },
+      },
+      description: "Book not found",
     },
   },
 });

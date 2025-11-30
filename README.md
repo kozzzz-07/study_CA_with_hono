@@ -2,6 +2,9 @@
 deno task start
 ```
 
+## set up
+1. `deno task drizzle:generate`
+2. `deno task drizzle:push`
 
 ## open api
 - json
@@ -50,7 +53,5 @@ src/
     - LoggerPortを実装。特定のライブラに依存した具体的なコードをここだけに閉じる
 - AdapterとPortをDIで結びつける
 
-
 ## memo
 - https://hono.dev/docs/guides/best-practices
-
