@@ -4,7 +4,7 @@ import { Logger } from "../../ports/logger.port.ts";
 
 // Usecaseが必要とする依存関係を定義
 export interface ListBooksDeps {
-  repository: BookRepository;
+  repository: BookRepository; // TODO: 依存絞ってもいいかも
   logger: Logger;
 }
 
