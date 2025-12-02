@@ -23,4 +23,5 @@ export const createBookRoute = createRoute({
       description: "Create the book",
     },
   },
+  security: [{ bearerAuth: [] }],
 });

@@ -12,4 +12,5 @@ export const deleteRoute = createRoute({
       description: "Delete the book",
     },
   },
+  security: [{ bearerAuth: [] }],
 });

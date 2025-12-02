@@ -19,6 +19,7 @@ export const listRoute = createRoute({
       description: "Retrieve book list",
     },
   },
+  security: [{ bearerAuth: [] }],
 });
 
 export const getByIdRoute = createRoute({
@@ -45,4 +46,5 @@ export const getByIdRoute = createRoute({
       description: "Book not found",
     },
   },
+  security: [{ bearerAuth: [] }],
 });
