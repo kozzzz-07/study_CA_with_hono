@@ -14,6 +14,7 @@ import { createBook } from "./core/entities/book.entity.ts";
 import { jwt, verify } from "hono/jwt";
 import type { JwtVariables } from "hono/jwt";
 import { bearerAuth } from "hono/bearer-auth";
+import { verifyUserExists } from "./infrastructure/api/middlewares/auth.ts";
 
 export type AppEnv = {
   Variables: {
@@ -39,7 +40,8 @@ app.use(
   "/books/*",
   jwt({
     secret: Deno.env.get("JWT_SECRET")!,
-  })
+  }),
+  verifyUserExists()
 );
 
 // bearerAuth認証
