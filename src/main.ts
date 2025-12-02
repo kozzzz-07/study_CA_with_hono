@@ -2,6 +2,8 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { swaggerUI } from "@hono/swagger-ui";
 import { logger as honoLogger } from "hono/logger";
 import books from "./infrastructure/api/controllers/book/books.ts";
+import users from "./infrastructure/api/controllers/user/users.ts";
+
 import {
   customLogger,
   logger,
@@ -9,11 +11,14 @@ import {
 import type { Logger } from "./core/ports/logger.port.ts";
 import { drizzleOrmRepository } from "./infrastructure/adapters/orm/drizzle/book/book.repository.ts";
 import { createBook } from "./core/entities/book.entity.ts";
+import { jwt, verify } from "hono/jwt";
+import type { JwtVariables } from "hono/jwt";
+import { bearerAuth } from "hono/bearer-auth";
 
 export type AppEnv = {
   Variables: {
     logger: Logger;
-  };
+  } & JwtVariables;
 };
 
 const app = new OpenAPIHono<AppEnv>();
@@ -27,6 +32,31 @@ app.use("*", async (c, next) => {
   await next();
 });
 
+// TODO: 認証はどっちが良いのだろうか。JWT使っている場合はペイロードをコンテキストから取得できる
+// JWT認証
+// https://hono.dev/docs/middleware/builtin/jwt
+app.use(
+  "/books/*",
+  jwt({
+    secret: Deno.env.get("JWT_SECRET")!,
+  })
+);
+
+// bearerAuth認証
+// https://hono.dev/docs/middleware/builtin/bearer-auth
+// app.use(
+//   "/books/*",
+//   bearerAuth({
+//     verifyToken: async (token, c) => {
+//       const { sub } = await verify(token, Deno.env.get("JWT_SECRET")!);
+//       if (sub && typeof sub === "string") {
+//         return true;
+//       }
+//       return false;
+//     },
+//   })
+// );
+
 app.get("/", (c) => {
   // コンテキストから抽象化されたloggerを取得できる
   const logger = c.get("logger");
@@ -39,6 +69,7 @@ app.get("/", (c) => {
 });
 
 app.route("/books", books);
+app.route("/users", users);
 
 app.get("/db-test", async (c) => {
   // db連携のテスト
@@ -80,6 +111,14 @@ app.doc("/doc", {
     version: "1.0.0",
     title: "My API",
   },
+});
+
+// https://github.com/honojs/middleware/issues/1437#issuecomment-3269067061
+app.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
+  type: "http",
+  scheme: "bearer",
+  bearerFormat: "JWT",
+  description: "JWT Authentication",
 });
 
 app.get("/ui", swaggerUI({ url: "/doc" }));
