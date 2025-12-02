@@ -15,6 +15,7 @@ import { jwt, verify } from "hono/jwt";
 import type { JwtVariables } from "hono/jwt";
 import { bearerAuth } from "hono/bearer-auth";
 import { verifyUserExists } from "./infrastructure/api/middlewares/auth.ts";
+import { HTTPException } from "hono/http-exception";
 
 export type AppEnv = {
   Variables: {
@@ -23,6 +24,29 @@ export type AppEnv = {
 };
 
 const app = new OpenAPIHono<AppEnv>();
+
+// グローバルなエラーハンドリング;
+app.onError((err, c) => {
+  const logger = c.get("logger");
+  logger.error(`An error occurred: ${err.message}`, {
+    errorName: err.name,
+  });
+
+  // Hono's HTTPException
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+
+  // その他の予期せぬエラー
+  return c.json(
+    {
+      success: false,
+      message: "サーバーで予期せぬエラーが発生しました。",
+      code: 500,
+    },
+    500
+  );
+});
 
 // SEE: https://hono.dev/docs/middleware/builtin/logger
 app.use(honoLogger(customLogger));

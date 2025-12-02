@@ -10,6 +10,8 @@ export const verifyUserExists = (): MiddlewareHandler<AppEnv> => {
 
     if (!payload || !payload.sub) {
       logger.warn("No user ID found in JWT payload");
+      // 実際はあんまり詳細を書かない方が良い
+      // import { HTTPException } from "hono/http-exception"; をスローでもいいかも
       return c.json(
         { error: "Unauthorized", message: "User ID not in token payload" },
         401
