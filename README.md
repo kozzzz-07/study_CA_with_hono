@@ -1,10 +1,13 @@
+## set up
+1. `deno task drizzle:generate`
+2. `deno task drizzle:push`
+
+
+## local start
 ```
 deno task start
 ```
 
-## set up
-1. `deno task drizzle:generate`
-2. `deno task drizzle:push`
 
 ## open api
 - json
