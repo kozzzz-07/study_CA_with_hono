@@ -1,11 +1,10 @@
 import { UserRepository } from "../../ports/database.port.ts";
 import { Logger } from "../../ports/logger.port.ts";
-import { NotExistingUser } from "../../entities/user.entity.ts";
-
-type SignInUserInput = {
-  login: string;
-  password: string;
-};
+import {
+  FindUserInput,
+  hashPassword,
+  signAndEncodeUserAccessToken,
+} from "../../entities/user.entity.ts";
 
 // Usecaseが必要とする依存関係を定義
 export interface SignInUserDeps {
@@ -14,26 +13,24 @@ export interface SignInUserDeps {
 }
 
 // Usecase本体の型
-export type SignUpUser = (
-  args: SignInUserInput
+export type SignInUser = (
+  args: FindUserInput,
 ) => Promise<{ accessToken: string } | "USER_NOT_FOUND">;
 
-export const makeSignInUser = (deps: SignInUserDeps): SignUpUser => {
+export const makeSignInUser = (deps: SignInUserDeps): SignInUser => {
   // 実際にHonoのハンドラから呼ばれる関数
   return async (
-    args: SignInUserInput
+    args: FindUserInput,
   ): Promise<{ accessToken: string } | "USER_NOT_FOUND"> => {
     deps.logger.info("[Get user usecase] Start");
 
-    const notExistingUser = new NotExistingUser();
-
     const existingUser = await deps.repository.findByLoginAndPassword({
       login: args.login,
-      password: notExistingUser.hashPassword(args.password),
+      password: hashPassword(args.password),
     });
 
     if (existingUser) {
-      const accessToken = await existingUser.signAndEncodeUserAccessToken();
+      const accessToken = await signAndEncodeUserAccessToken(existingUser);
 
       return { accessToken };
     }

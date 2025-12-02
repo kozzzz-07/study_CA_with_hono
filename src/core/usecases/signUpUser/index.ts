@@ -1,11 +1,10 @@
 import { UserRepository } from "../../ports/database.port.ts";
 import { Logger } from "../../ports/logger.port.ts";
-import { NotExistingUser } from "../../entities/user.entity.ts";
-
-type SignUpUserInput = {
-  login: string;
-  password: string;
-};
+import {
+  CreateUserInput,
+  hashPassword,
+  signAndEncodeUserAccessToken,
+} from "../../entities/user.entity.ts";
 
 // Usecaseが必要とする依存関係を定義
 export interface SignUpUserDeps {
@@ -15,29 +14,27 @@ export interface SignUpUserDeps {
 
 // Usecase本体の型
 export type SignUpUser = (
-  args: SignUpUserInput
+  args: CreateUserInput,
 ) => Promise<{ accessToken: string } | "USER_ALREADY_EXISTS">;
 
 export const makeSignUpUser = (deps: SignUpUserDeps): SignUpUser => {
   //
 
   return async (
-    args: SignUpUserInput
+    args: CreateUserInput,
   ): Promise<{ accessToken: string } | "USER_ALREADY_EXISTS"> => {
     deps.logger.info("[Create user usecase] Start");
 
-    const notExistingUser = new NotExistingUser();
-
-    const existingUser = await deps.repository.create({
+    const user = await deps.repository.create({
       login: args.login,
-      password: notExistingUser.hashPassword(args.password),
+      password: hashPassword(args.password),
     });
 
-    if (existingUser === "USER_ALREADY_EXISTS") {
-      return existingUser;
+    if (user === "USER_ALREADY_EXISTS") {
+      return user;
     }
 
-    const accessToken = await existingUser.signAndEncodeUserAccessToken();
+    const accessToken = await signAndEncodeUserAccessToken(user);
 
     return { accessToken };
   };
