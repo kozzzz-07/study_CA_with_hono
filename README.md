@@ -18,6 +18,7 @@ deno task start
 
 ## 構成について
 
+```
 src/
 ├─ core/
 │ ├─ entities/
@@ -26,6 +27,7 @@ src/
 ├─ infrastructure/
 │ ├─ api/
 │ └─ adapters/
+```
  
 - core
   - インターフェース、エンティティはフロントエンドに送る内容
