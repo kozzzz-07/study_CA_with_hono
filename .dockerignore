@@ -1,0 +1,14 @@
+.git
+.gitignore
+Dockerfile
+node_modules
+README.md
+GEMINI.md
+.vscode
+.history
+.lh
+_memos
+drizzle
+deno.lock
+.env
+.env.sample

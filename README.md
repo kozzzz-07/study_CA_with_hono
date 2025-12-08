@@ -60,3 +60,8 @@ src/
 
 ## memo
 - https://hono.dev/docs/guides/best-practices
+
+
+# local docker run
+- cp .env.sample .env
+- docker run -p 8000:8000 --env-file .env my-deno-app

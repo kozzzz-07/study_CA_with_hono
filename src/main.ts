@@ -149,4 +149,10 @@ app.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
 
 app.get("/ui", swaggerUI({ url: "/doc" }));
 
-Deno.serve(app.fetch);
+Deno.serve(
+  {
+    hostname: "0.0.0.0",
+    port: Number(Deno.env.get("PORT")) || 8000,
+  },
+  app.fetch
+);
